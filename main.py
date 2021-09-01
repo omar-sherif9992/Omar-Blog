@@ -2,7 +2,7 @@ import html
 import re
 from datetime import datetime
 from functools import wraps
-from Notification.email_manager import EmailManager
+from email_manager import EmailManager
 from flask import Flask, render_template, redirect, url_for, request, flash, abort
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
