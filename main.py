@@ -173,11 +173,13 @@ def contact():
     return render_template("contact.html", logged_in=current_user.is_authenticated)
 
 
-@app.route("/forum_entry", methods=["POST"])
+@app.route("/forum_entry", methods=["GET","POST"])
 @login_required
 def login():
     name = request.form["name"]
     email = request.form["email"]
+    if not "@" in str(email) or not ".com" in str(email):
+        return redirect(url_for("contact"))
     message = request.form["message"]
     phone = request.form["phone"]
     email_message = f"name: {name} \n" \
