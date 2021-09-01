@@ -1,27 +1,23 @@
 import html
 import re
-
 from datetime import datetime
 from functools import wraps
 from Notification.email_manager import EmailManager
 from flask import Flask, render_template, redirect, url_for, request, flash, abort
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import  CSRFProtect
+from flask_wtf import CSRFProtect
 from flask_ckeditor import CKEditor
 import calendar
 from flask_gravatar import Gravatar
 from forms import PostForm, RegisterForm, LoginForm, CommentForm
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user, \
-    fresh_login_required, confirm_login
-from sqlalchemy import Table, Column, Integer, ForeignKey
+from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
-# posts = requests.get("https://api.npoint.io/67e63bfb1de5467da49f").json()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('MAIN_BLOG_SECRET_KEY')
@@ -72,7 +68,7 @@ class Comment(db.Model):
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text, nullable=False)
-    date=db.Column(db.Text, nullable=False)
+    date = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
 
@@ -90,27 +86,19 @@ class BlogPost(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
 
-# db.create_all()
-# new_user=User(id=1,
-#     name="Omar Sherif",
-#     email="omar.sherif9992@gmail.com",
-#     password=generate_password_hash("Omar2001",method="pbkdf2:sha256",salt_length=8),
-# )
-# db.session.add(new_user)
-# db.session.commit()
-
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
 
 db.create_all()
+
+
 @app.route('/')
 def get_all_posts():
     ADMIN_USER = User.query.filter_by(id=1).first()
     posts = ADMIN_USER.posts
-    posts=posts[::-1]
+    posts = posts[::-1]
     return render_template("index.html", all_posts=posts, logged_in=current_user.is_authenticated)
 
 
@@ -161,13 +149,13 @@ def show_post(index):
         day = datetime.now().day
         year = datetime.now().year
         date = f"{month} {day},{year}"
-        db.session.add(Comment(user=current_user, text=comment,date=date))
+        db.session.add(Comment(user=current_user, text=comment, date=date))
         db.session.commit()
 
         comment_form.comment.data = ""
 
     comments = Comment.query.all()
-    comments=comments[::-1]
+    comments = comments[::-1]
     return render_template("post.html", post=requested_post, logged_in=current_user.is_authenticated, form=comment_form,
                            comments=comments)
 
@@ -305,8 +293,6 @@ def login_user_page():
                                    condition="Invalid Password")
 
     return render_template('login.html', form=login_form, logged_in=current_user.is_authenticated, condition="")
-
-
 
 
 if __name__ == "__main__":
