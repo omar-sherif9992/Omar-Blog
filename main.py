@@ -96,7 +96,11 @@ db.create_all()
 
 @app.route('/')
 def get_all_posts():
+
     ADMIN_USER = User.query.filter_by(id=1).first()
+    if ADMIN_USER == None:
+        return render_template("index.html", all_posts=[], logged_in=current_user.is_authenticated)
+
     posts = ADMIN_USER.posts
     posts = posts[::-1]
     return render_template("index.html", all_posts=posts, logged_in=current_user.is_authenticated)
