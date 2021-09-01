@@ -24,11 +24,9 @@ app.config['SECRET_KEY'] = os.environ.get('MAIN_BLOG_SECRET_KEY')
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
-csrf = CSRFProtect(app)
 
 app.config['RECAPTCHA_PUBLIC_KEY'] = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 app.config['RECAPTCHA_PRIVATE_KEY'] = os.environ.get('RECAPTCHA_PRIVATE_KEY')
-app.config["WTF_CSRF_ENABLED"] = False
 
 gravatar = Gravatar(app, size=100,
                     rating='g',
@@ -50,6 +48,7 @@ def unauthorized():
 ##CONNECT TO DB
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
 
