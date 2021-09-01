@@ -176,22 +176,24 @@ def contact():
 @app.route("/forum_entry", methods=["GET","POST"])
 @login_required
 def login():
-    name = request.form["name"]
-    email = request.form["email"]
-    if not "@" in str(email) or not ".com" in str(email):
-        return redirect(url_for("contact"))
-    message = request.form["message"]
-    phone = request.form["phone"]
-    email_message = f"name: {name} \n" \
-                    f"email: {email} \n" \
-                    f"phone: {phone} \n\n" \
-                    f"message: {message}\n"
-    email_manager = EmailManager()
-    email_manager.send_email(title="Omar's Blog Contact Forum", message=email_message + "message is recieved",
-                             to_addrs=email, first_name=name, last_name="")
-    email_manager.send_email(title="Omar's Blog Contact Forum", message=email_message + "message is recieved",
-                             to_addrs="omar.sherif9991@gmail.com", first_name=name, last_name="")
-    return render_template("message_sent.html", logged_in=current_user.is_authenticated)
+    if request.method=="POST":
+        name = request.form["name"]
+        email = request.form["email"]
+        if not "@" in str(email) or not ".com" in str(email):
+            return redirect(url_for("contact"))
+        message = request.form["message"]
+        phone = request.form["phone"]
+        email_message = f"name: {name} \n" \
+                        f"email: {email} \n" \
+                        f"phone: {phone} \n\n" \
+                        f"message: {message}\n"
+        email_manager = EmailManager()
+        email_manager.send_email(title="Omar's Blog Contact Forum", message=email_message + "message is recieved",
+                                 to_addrs=email, first_name=name, last_name="")
+        email_manager.send_email(title="Omar's Blog Contact Forum", message=email_message + "message is recieved",
+                                 to_addrs="omar.sherif9991@gmail.com", first_name=name, last_name="")
+        return render_template("message_sent.html", logged_in=current_user.is_authenticated)
+    return redirect(url_for("contact"))
 
 
 @app.route("/edit-post/<post_id>", methods=["GET", "POST"])
