@@ -12,12 +12,12 @@ P.S. Passwords are hashed and salted immediately using werkzeug
 * user can contact me through an Email Forum
 
 ## __Technologie Used__
-*Python3
-*Flask
-*Databases: SQLite using SQLAlchemy (locally) and PostgreSQL (externally)
-*HTML
-*CSS
-*Javascript
-*Bootstrap
-*Jinja2 (For templating)
-*Heroku (Website Deployment)
+* Python3
+* Flask
+* Databases: SQLite using SQLAlchemy (locally) and PostgreSQL (externally)
+* HTML
+* CSS
+* Javascript
+* Bootstrap
+* Jinja2 (For templating)
+* Heroku (Website Deployment)
